@@ -1,0 +1,8 @@
+2,4, // bst -> b = a % 8
+1,2, // bxl -> b = b xor 2
+7,5, // cdv -> c = a / (2^b) - toInt()
+4,7, // bxc -> b = b xor c
+1,3, // bxl -> b = b xor 3
+5,5, // out -> out.add(b % 8)
+0,3, // adv -> a = (a / 8) - toInt()
+3,0  // jnz -> if (a != 0) repeat
