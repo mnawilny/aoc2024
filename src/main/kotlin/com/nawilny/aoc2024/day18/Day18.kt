@@ -14,19 +14,21 @@ fun main() {
 
     findShortestPath(droppedBytes, size).println()
 
-    val cutoffByte = findByteThatCutsThePathOff(input, size)
+    val cutoffByte = findByteThatCutsThePathOff(input, size, input.indices)
     "${cutoffByte.x},${cutoffByte.y}".println()
 }
 
-private fun findByteThatCutsThePathOff(bytes: List<Position>, size: Position): Position {
-    val droppedBytes = mutableSetOf<Position>()
-    bytes.forEach {
-        droppedBytes.add(it)
-        if (findShortestPath(droppedBytes, size) == 0) {
-            return it
-        }
+private fun findByteThatCutsThePathOff(bytes: List<Position>, size: Position, range: IntRange): Position {
+    if (range.first == range.last) {
+        return bytes[range.first]
     }
-    return Position(0, 0)
+    val c = range.first + ((range.last - range.first) / 2) + 1
+    val droppedBytes = bytes.subList(0, c).toSet()
+    return if (findShortestPath(droppedBytes, size) > 0) {
+        findByteThatCutsThePathOff(bytes, size, c..range.last)
+    } else {
+        findByteThatCutsThePathOff(bytes, size, range.first..<c)
+    }
 }
 
 private fun findShortestPath(droppedBytes: Set<Position>, size: Position): Int {
@@ -51,7 +53,6 @@ private fun findShortestPath(droppedBytes: Set<Position>, size: Position): Int {
                 }
             }
         positionsToCheck.remove(currentPosition.key)
-
     }
     return 0
 }
